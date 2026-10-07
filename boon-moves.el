@@ -16,14 +16,14 @@
 ;;;###autoload
 (defun boon-find-char-backward (char)
   "Move the cursor backwards, until finding an occurence of the character CHAR."
-  (interactive "cType the character to find")
+  (interactive "Type the character to find")
   (search-backward (make-string 1 char))
   (forward-char 1))
 
 ;;;###autoload
 (defun boon-find-char-forward (char)
   "Find the given character (as CHAR), forwards."
-  (interactive "cType the character to find")
+  (interactive "Type the character to find")
   (search-forward (make-string 1 char))
   (backward-char 1))
 
