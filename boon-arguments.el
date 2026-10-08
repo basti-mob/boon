@@ -18,6 +18,7 @@
 (require 'boon-utils)
 (require 'multiple-cursors)
 (require 'dash)
+(require 'smartparens)
 
 (defcustom boon-enclosures
       '(
@@ -166,17 +167,34 @@ There are two occurrences: one at begin and one at end."
        (let ((end (1- (point))))
          (boon-mk-reg (1+ (search-backward "{")) end))))))
 
+(defun my/mark-inside-sp-pair ()
+  "Mark the inside of the innermost smartparens pair around point."
+  (interactive)
+  (when-let ((s (sp-get-enclosing-sexp)))
+    (sp-get s
+      (set-mark :end-in)
+      (goto-char :beg-in))))
+
+(defun my/mark-outside-sp-pair ()
+  "Mark the inside of the innermost smartparens pair around point."
+  (interactive)
+  (when-let ((s (sp-get-enclosing-sexp)))
+    (sp-get s
+      (set-mark :end)
+      (goto-char :beg))))
+
 (defun boon-select-document () (interactive) (lambda () (boon-regs-from-bounds (cons (point-min) (point-max)))))
 (defun boon-select-paragraph      (count) (interactive "p") (boon-select-n count 'paragraph))
 (defun boon-select-word           (count) (interactive "p") (boon-select-n-copies count 'word))
 (defun boon-select-sentence       (count) (interactive "p") (boon-select-n count 'sentence))
 (defun boon-select-symbol         (count) (interactive "p") (boon-select-n-copies count 'symbol))
 (defun boon-select-list           (count) (interactive "p") (boon-select-n count 'list))
-(defun boon-select-sexp           (count) (interactive "p") (boon-select-n count 'sexp))
 (defun boon-select-whitespace     (count) (interactive "p") (boon-select-n count 'whitespace))
-(defun boon-select-outside-pairs  () (interactive) (boon-select-from-region 'er/mark-outside-pairs))
 (defun boon-select-comment        () (interactive) (boon-select-from-region 'er/mark-comment))
-(defun boon-select-inside-pairs   () (interactive) (boon-select-from-region 'er/mark-inside-pairs))
+;; (defun boon-select-outside-pairs  () (interactive) (boon-select-from-region 'er/mark-outside-pairs))
+;; (defun boon-select-inside-pairs   () (interactive) (boon-select-from-region 'er/mark-inside-pairs))
+(defun boon-select-outside-pairs  () (interactive) (boon-select-from-region 'my/mark-outside-sp-pair))
+(defun boon-select-inside-pairs   () (interactive) (boon-select-from-region 'my/mark-inside-sp-pair))
 (defun boon-select-outside-quotes () (interactive) (boon-select-from-region 'er/mark-outside-quotes))
 (defun boon-select-inside-quotes  () (interactive) (boon-select-from-region 'er/mark-inside-quotes))
 (defun boon-select-blanks ()
