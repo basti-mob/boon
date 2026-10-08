@@ -16,12 +16,10 @@
 (define-key boon-moves-map  (kbd "<up>") 'previous-line)
 (define-key boon-moves-map  (kbd "<down>") 'next-line)
 
-(define-key boon-command-map "'" 'boon-toggle-mark)
 (define-key boon-command-map [(return)] 'undefined)
 (define-key boon-command-map (kbd "<RET>") 'undefined)
 (define-key boon-command-map [(backspace)] 'undefined)
 (define-key boon-command-map (kbd "<DEL>") 'undefined)
-(define-key boon-command-map "`" 'boon-toggle-case)
 
 (dolist (number '("0" "1" "2" "3" "4" "5" "6" "7" "8" "9"))
   (define-key boon-command-map number 'digit-argument))
